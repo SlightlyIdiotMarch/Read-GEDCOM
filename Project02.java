@@ -56,28 +56,33 @@ public class Project02 {
 				while ((line = br.readLine()) != null) {
 					System.out.println("--> " + line);
 					String[] array = line.split(" ");
+					String str = new String();
+					for (int i = 2; i < array.length; i++) {
+						str += array[i] + " ";
+					}
+					str = str.trim();
 					switch (array[0]) {
 					case "0" : 
 						if (set0.contains(array[1])) {
-							System.out.println("<-- " + array[0] + "|" + array[1] + "|Y|" + (array.length>2?array[2]:""));
+							System.out.println("<-- " + array[0] + "|" + array[1] + "|Y|" + str);
 						} else if (set0_spe.contains(array[2])) {
 							System.out.println("<-- " + array[0] + "|" + array[2] + "|Y|" + array[1]);
 						} else {
-							System.out.println("<-- " + array[0] + "|" + array[1] + "|N|" + (array.length>2?array[2]:""));
+							System.out.println("<-- " + array[0] + "|" + array[1] + "|N|" + str);
 						}
 						break;
 					case "1" :
 						if (set1.contains(array[1])) {
-							System.out.println("<-- " + array[0] + "|" + array[1] + "|Y|" + (array.length>2?array[2]:""));
+							System.out.println("<-- " + array[0] + "|" + array[1] + "|Y|" + str);
 						} else {
-							System.out.println("<-- " + array[0] + "|" + array[1] + "|N|" + (array.length>2?array[2]:""));
+							System.out.println("<-- " + array[0] + "|" + array[1] + "|N|" + str);
 						}
 						break;
 					case "2" :
 						if (set2.contains(array[1])) {
-							System.out.println("<-- " + array[0] + "|" + array[1] + "|Y|" + (array.length>2?array[2]:""));
+							System.out.println("<-- " + array[0] + "|" + array[1] + "|Y|" + str);
 						} else {
-							System.out.println("<-- " + array[0] + "|" + array[1] + "|N|" + (array.length>2?array[2]:""));
+							System.out.println("<-- " + array[0] + "|" + array[1] + "|N|" + str);
 						}
 					}
 				}
