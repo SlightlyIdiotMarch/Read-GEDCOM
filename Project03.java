@@ -77,7 +77,8 @@ public class Project03 {
 		//Those two variables are used to save the ID and key that are needed for hashmap
 		String ID = new String();
 		String key = new String();
-		try(InputStreamReader reader = new InputStreamReader(new FileInputStream(file));
+		try(FileInputStream fis = new FileInputStream(file);
+			InputStreamReader reader = new InputStreamReader(fis);
 			BufferedReader br = new BufferedReader(reader))
 		{
 			
