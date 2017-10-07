@@ -28,10 +28,10 @@ public class Individual {
 								individual.add(ss);
 								break;
 							}
-							i++;
+							++i;
 						}
 					}
-					i++;
+					++i;
 				}
 				for (int i = 0; i < individual.size() - 1; ++i) { // sort
 					for (int j = i + 1; j < individual.size(); ++j) {
