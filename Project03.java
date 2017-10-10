@@ -19,8 +19,8 @@ public class Project03 {
 			if(args.length==0)
 				throw new RuntimeException("Usage : <Filename>");
 			String path = args[0];
-			Map<String,Map<String,String>> individuals = new HashMap<>();
-			Map<String,Map<String,String>> families = new HashMap<>();
+			HashMap<String,HashMap<String,String>> individuals = new HashMap<String,HashMap<String,String>>();
+			HashMap<String,HashMap<String,String>> families = new HashMap<String,HashMap<String,String>>();
 			readGed(path, individuals, families);
 			System.out.println("Individuals");
 			printIndividuals(individuals);
@@ -35,18 +35,18 @@ public class Project03 {
 	}
 	
 	//Read GEMCOM file and save information into memory
-	private static void readGed(String filePath, Map<String,Map<String,String>> individuals, Map<String,Map<String,String>> families) throws java.io.IOException
+	private static void readGed(String filePath, HashMap<String,HashMap<String,String>> individuals, HashMap<String,HashMap<String,String>> families) throws java.io.IOException
 	{
 		File file = new File(filePath);
 		if (!(file.isFile() && file.exists()))
 			throw new java.io.FileNotFoundException(filePath+" not exists");
-		Set<String> set0 = new HashSet<String>(){
+		HashSet<String> set0 = new HashSet<String>(){
 			{
 				add("INDI");
 				add("FAM");
 			}
 		};
-		Set<String> set1 = new HashSet<String>(){
+		HashSet<String> set1 = new HashSet<String>(){
 			{
 				add("NAME");
 				add("SEX");
@@ -57,7 +57,7 @@ public class Project03 {
 				add("CHIL");
 			}
 		};
-		Set<String> set1_spe = new HashSet<String>(){
+		HashSet<String> set1_spe = new HashSet<String>(){
 			{
 				add("BIRT");
 				add("DEAT");
@@ -65,15 +65,15 @@ public class Project03 {
 				add("DIV");
 			}
 		};
-		Set<String> set2 = new HashSet<String>(){
+		HashSet<String> set2 = new HashSet<String>(){
 			{
 				add("DATE");
 			}
 		};
 		// mapType indicates which map is used to store the following information
-		Map<String,Map<String,String>> mapType = new HashMap<>();
+		HashMap<String,HashMap<String,String>> mapType = new HashMap<String,HashMap<String,String>>();
 		// mapEle is one element of the top level map.
-		Map<String,String> mapEle = new HashMap<>();
+		HashMap<String,String> mapEle = new HashMap<String,String>();
 		//Those two variables are used to save the ID and key that are needed for hashmap
 		String ID = new String();
 		String key = new String();
@@ -138,9 +138,9 @@ public class Project03 {
 	}
 	
 	// This function is used to print individuals information
-	private static void printIndividuals(Map<String,Map<String,String>> individuals){
-		Set<Integer> sortSet = new TreeSet();
-		List<String> keys = new ArrayList<>();
+	private static void printIndividuals(HashMap<String,Map<String,String>> individuals){
+		TreeSet<Integer> sortSet = new TreeSet<Integer>();
+		ArrayList<String> keys = new ArrayList<String>();
 		for (String key : individuals.keySet()) {
 			key = key.replaceAll("@", "");
 			key = key.replaceAll("I", "");
@@ -159,8 +159,8 @@ public class Project03 {
 	
 	//This funtion is used to print families information
 	private static void printFamilies(Map<String,Map<String,String>> families,Map<String,Map<String,String>> individuals){
-		Set<Integer> sortSet = new TreeSet<>();
-		List<String> keys = new ArrayList<>();
+		TreeSet<Integer> sortSet = new TreeSet<Integer>();
+		ArrayList<String> keys = new ArrayList<String>();
 		for (String key : families.keySet()) {
 			key = key.replaceAll("@", "");
 			key = key.replaceAll("F", "");
@@ -172,7 +172,7 @@ public class Project03 {
 		}
 		System.out.println("ID	Husban Name	Wife Name");
 		//for(Map.Entry<String, Map<String,String>> entry:individuals.entrySet()) {
-		for (String key : keys) {
+		for (String key : keys) 
 			System.out.println(key.replaceAll("@", "") + "	"
 								+ individuals.get(families.get(key).get("HUSB")).get("NAME") + "	"
 								+ individuals.get(families.get(key).get("WIFE")).get("NAME"));
@@ -180,3 +180,4 @@ public class Project03 {
 	}
 	
 }
+
