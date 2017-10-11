@@ -18,7 +18,7 @@ public class ValidCode2 {
 		printIndiDiv();
 		for(Individual indi:indi_list){
 			String spouse1 = "";
-			ArrayList<Family> fa = GEDCOMParser.getFamiliesByIndiId(indi, family_list);
+			ArrayList<Family> fa = UtilityZS.getFamiliesByIndiId(indi, family_list);
 			if (fa != null && fa.size() > 0) {
 				for (Family family: fa) {
 					if (indi.sex.equals("M")) {
@@ -28,9 +28,11 @@ public class ValidCode2 {
 					}
 				}
 			}
-			int age = 0;
+			String age = "";
 			try {
-				age = GEDCOMParser.getAge(GEDCOMParser.processDate(indi.birthday));
+				if (indi.death == null) {
+					age = String.valueOf(UtilityZS.getAge(UtilityZS.processDate(indi.birthday))); 
+				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -41,7 +43,7 @@ public class ValidCode2 {
 			} else {
 				alive = "alive";
 			}
-			printIndi(indi.id,indi.name,indi.sex,indi.birthday,String.valueOf(age),alive,death,indi.fChild, spouse1);
+			printIndi(indi.id,indi.name,indi.sex,indi.birthday,age,alive,death,indi.fChild, spouse1);
 		}
 		printIndiDiv();
 		System.out.println();
@@ -79,16 +81,13 @@ public class ValidCode2 {
 			printFam(fam.id,marriage_date,divorced_date,fam.husband_id,husband_name,fam.wife_id,wife_name,children.toString());
 		}
 		printFamDiv();
-		
-		
 		try {
-			GEDCOMParser.birthBeforeMarr(indi_list, family_list);
-			GEDCOMParser.marraigeBeforeDeath(indi_list, family_list);
+			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
+			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 /*	public static void sortIndi(List<Individual> indi_list){
 		Collections.sort(indi_list,new Comparator<Individual>() {

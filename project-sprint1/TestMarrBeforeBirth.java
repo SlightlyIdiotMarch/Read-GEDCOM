@@ -17,7 +17,7 @@ public class TestMarrBeforeBirth {
 		List<Family> family_list = new ArrayList<>();
 		GEDCOMParser.parse(address, indi_list, family_list);
 		try {
-			assertEquals(true, GEDCOMParser.birthBeforeMarr(indi_list, family_list));
+			assertEquals(false, UserStorySprint1.birthBeforeMarr(indi_list, family_list));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
