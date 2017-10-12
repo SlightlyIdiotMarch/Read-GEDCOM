@@ -1,4 +1,4 @@
-package readGedcom;
+
 
 import static org.junit.Assert.*;
 
