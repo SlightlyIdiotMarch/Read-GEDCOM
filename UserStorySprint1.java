@@ -1,5 +1,3 @@
-package project03;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +44,5 @@ public class UserStorySprint1 {
 		}
 		return result;
 	}
-	
 	
 }

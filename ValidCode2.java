@@ -1,4 +1,3 @@
-package project03;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,10 +6,13 @@ import java.util.List;
 
 public class ValidCode2 {
 	public static void main(String[] arge){
+
 		String address="c:\\Users\\shizekang\\desktop\\cs-555\\Project01.ged";
+
 		List<Individual> indi_list = new ArrayList<>();
 		List<Family> family_list = new ArrayList<>();
 		GEDCOMParser.parse(address, indi_list, family_list);
+    CheckValidate cv = new CheckValidate();
 		//sortIndi(indi_list);
 		System.out.println("Individuals");
 		printIndiDiv();
@@ -20,13 +22,18 @@ public class ValidCode2 {
 			String spouse1 = "";
 			ArrayList<Family> fa = UtilityZS.getFamiliesByIndiId(indi, family_list);
 			if (fa != null && fa.size() > 0) {
+        spouse1 += "{";
 				for (Family family: fa) {
+          if (spouse1.length() > 1) {
+						spouse1 += ",";
+					}
 					if (indi.sex.equals("M")) {
-						spouse1 += family.wife_id;
+						spouse1 += "'" + family.wife_id + "'";
 					} else {
-						spouse1 += family.husband_id;
+						spouse1 += "'" + family.husband_id + "'";
 					}
 				}
+        spouse1 += "}";
 			}
 			String age = "";
 			try {
@@ -39,11 +46,13 @@ public class ValidCode2 {
 			String alive = "";
 			String death = "";
 			if (indi.death != null) {
+				alive = "false";
 				death = indi.death;
 			} else {
 				alive = "alive";
+				death = "NA";
 			}
-			printIndi(indi.id,indi.name,indi.sex,indi.birthday,age,alive,death,indi.fChild, spouse1);
+			printIndi(indi.id,indi.name,indi.sex,indi.birthday,String.valueOf(age),alive,death,indi.fChild!=null?indi.fChild:"None", spouse1==""?"NA":spouse1);
 		}
 		printIndiDiv();
 		System.out.println();
@@ -78,12 +87,14 @@ public class ValidCode2 {
 					wife_name = indi.name;
 				}
 			}
-			printFam(fam.id,marriage_date,divorced_date,fam.husband_id,husband_name,fam.wife_id,wife_name,children.toString());
+			printFam(fam.id,marriage_date,divorced_date,fam.husband_id,husband_name,fam.wife_id,wife_name,(children.length()==0)?"NA":(children.toString()));
 		}
 		printFamDiv();
 		try {
 			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
 			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
+      cv.BirthBeforeDeath(indi_list);
+      cv.DivorceBeforeDeath(family_list, indi_list);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,7 +125,7 @@ public class ValidCode2 {
 				+"+"+Utils.getFillString("",7, "-")
 				+"+"+Utils.getFillString("",14, "-")
 				+"+"+Utils.getFillString("",8, "-")
-				+"+"+Utils.getFillString("",8, "-")
+				+"+"+Utils.getFillString("",20, "-")
 				+"+");
 	}
 	
@@ -128,7 +139,7 @@ public class ValidCode2 {
 				+"|"+Utils.getFillString(alive,7)
 				+"|"+Utils.getFillString(death,14)
 				+"|"+Utils.getFillString(child,8)
-				+"|"+Utils.getFillString(spouse,8)
+				+"|"+Utils.getFillString(spouse,20)
 				+"|");
 	}
 	
