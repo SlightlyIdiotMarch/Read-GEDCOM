@@ -1,6 +1,6 @@
-package readGedcom;
 
 import java.util.ArrayList;
+
 
 public class Individual {
 	public String id;
