@@ -1,4 +1,4 @@
-package readGedcom;
+
 
 import java.text.SimpleDateFormat;
 import java.util.List;
