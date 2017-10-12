@@ -1,4 +1,6 @@
 
+package project03;
+
 public class Utils {
 	public static String getFillString(String input,int length){
 		return getFillString(input, length, " ");

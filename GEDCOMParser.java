@@ -1,9 +1,28 @@
+
+package project03;
+
+
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+public class GEDCOMParser {
+	
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +49,7 @@ public class GEDCOMParser {
 
 		String[] indiPs = { "NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS" };
 		String[] familyPs = { "MARR", "HUSB", "WIFE", "CHIL", "DIV" };
+
 
 		File f = new File(file);
 
@@ -82,6 +102,10 @@ public class GEDCOMParser {
 								break;
 							case "FAMS":
 								if(indi!=null){
+									if(indi.fSpouse==null)
+										indi.fSpouse = new ArrayList<>();
+									String spouse = getValue(content,"FAMS");
+									indi.fSpouse.add(spouse);
 									indi.fSpouse = getValue(content,"FAMS");
 								}
 								break;
