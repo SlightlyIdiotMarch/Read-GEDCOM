@@ -1,4 +1,3 @@
-package readGedcom;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
 
 public class GEDCOMParser {
 	public static void parse(String file, List<Individual> indis, List<Family> families) {
@@ -92,6 +96,7 @@ public class GEDCOMParser {
 										indi.fSpouse = new ArrayList<>();
 									String spouse = getValue(content,"FAMS");
 									indi.fSpouse.add(spouse);
+									indi.fSpouse = getValue(content,"FAMS");
 								}
 								break;
 							case "MARR":
@@ -156,7 +161,7 @@ public class GEDCOMParser {
 		}
 		return date;
 	}
-	
+
 	//convert string to date
 		public static Date processDate(String date) throws ParseException {
 			String result = "";

@@ -1,15 +1,18 @@
-package readGedcom;
-
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ValidCode2 {
 	public static void main(String[] arge){
-		String address="src/testfile/Project01.ged";
+
+		String address="c:\\Users\\shizekang\\desktop\\cs-555\\Project01.ged";
+
 		List<Individual> indi_list = new ArrayList<>();
 		List<Family> family_list = new ArrayList<>();
 		GEDCOMParser.parse(address, indi_list, family_list);
+    CheckValidate cv = new CheckValidate();
 		//sortIndi(indi_list);
 		System.out.println("Individuals");
 		printIndiDiv();
@@ -17,11 +20,11 @@ public class ValidCode2 {
 		printIndiDiv();
 		for(Individual indi:indi_list){
 			String spouse1 = "";
-			ArrayList<Family> fa = GEDCOMParser.getFamiliesByIndiId(indi, family_list);
+			ArrayList<Family> fa = UtilityZS.getFamiliesByIndiId(indi, family_list);
 			if (fa != null && fa.size() > 0) {
-				spouse1 += "{";
+        spouse1 += "{";
 				for (Family family: fa) {
-					if (spouse1.length() > 1) {
+          if (spouse1.length() > 1) {
 						spouse1 += ",";
 					}
 					if (indi.sex.equals("M")) {
@@ -30,11 +33,13 @@ public class ValidCode2 {
 						spouse1 += "'" + family.husband_id + "'";
 					}
 				}
-				spouse1 += "}";
+        spouse1 += "}";
 			}
-			int age = 0;
+			String age = "";
 			try {
-				age = GEDCOMParser.getAge(GEDCOMParser.processDate(indi.birthday));
+				if (indi.death == null) {
+					age = String.valueOf(UtilityZS.getAge(UtilityZS.processDate(indi.birthday))); 
+				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -85,9 +90,19 @@ public class ValidCode2 {
 			printFam(fam.id,marriage_date,divorced_date,fam.husband_id,husband_name,fam.wife_id,wife_name,(children.length()==0)?"NA":(children.toString()));
 		}
 		printFamDiv();
+		try {
+			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
+			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
+      cv.BirthBeforeDeath(indi_list);
+      cv.DivorceBeforeDeath(family_list, indi_list);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	/*	public static void sortIndi(List<Individual> indi_list){
+/*	public static void sortIndi(List<Individual> indi_list){
 		Collections.sort(indi_list,new Comparator<Individual>() {
+
 			@Override
 			public int compare(Individual o1, Individual o2) {
 				int a = o1.id.compareTo(o2.id);
