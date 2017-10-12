@@ -1,8 +1,10 @@
+
 package project03;
 
 
 
 import java.util.ArrayList;
+
 
 public class Individual {
 	public String id;
@@ -12,4 +14,6 @@ public class Individual {
 	public String death;
 	public String fChild;
 	public ArrayList<String> fSpouse;
+	public String fSpouse;
+
 }
