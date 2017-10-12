@@ -95,12 +95,16 @@ public class ValidCode2 {
 			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
       cv.BirthBeforeDeath(indi_list);
       cv.DivorceBeforeDeath(family_list, indi_list);
+      	Check.beforeCurrent(indi_list, family_list);
+		Check.dateBeforeMarriage(family_list);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Check.beforeCurrent(indi_list, family_list);
-		Check.dateBeforeMarriage(family_list);
+
+	
+
+
 	}
 /*	public static void sortIndi(List<Individual> indi_list){
 		Collections.sort(indi_list,new Comparator<Individual>() {
