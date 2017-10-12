@@ -96,6 +96,7 @@ public class GEDCOMParser {
 										indi.fSpouse = new ArrayList<>();
 									String spouse = getValue(content,"FAMS");
 									indi.fSpouse.add(spouse);
+
 								}
 								break;
 							case "MARR":
