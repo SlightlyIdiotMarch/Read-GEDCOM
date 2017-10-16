@@ -1,5 +1,3 @@
-package project03;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class UtilityZS {
 	public static ArrayList<Family> getFamiliesByIndiId(Individual individual, List<Family> families) {
@@ -34,7 +33,7 @@ public class UtilityZS {
 				result += format + "-";
 			}
 			result = result.substring(0, result.length() - 1);
-			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH);
 			Date resultdate = dateFormat.parse(result);
 			return resultdate;
 		}

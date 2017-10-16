@@ -35,7 +35,7 @@ public class UserStorySprint1 {
 					for (Family family: getFamilies) {
 						Date marriagedate = UtilityZS.processDate(family.marriage_date );
 						if (deathdate.before(marriagedate)) {
-							System.out.println("ERROR: INDIVIDUAL: US05: " + individual.id + ": Deathdate " + deathdate + " is before the marriage date " + marriagedate);
+							System.out.println("ERROR: INDIVIDUAL: US05: " + individual.id + " Deathdate " + deathdate + " is before the marriage date " + marriagedate);
 							result = false;
 						}	
 					}

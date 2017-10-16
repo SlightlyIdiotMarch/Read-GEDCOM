@@ -1,4 +1,3 @@
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -74,8 +73,7 @@ public class Check {
 				SimpleDateFormat sdf=new SimpleDateFormat("yyyy MM d");
 				String marry=sdf.format(format.parse(fam.marriage_date))	;
 				String divorce=sdf.format(format.parse(fam.divorce_date))	;
-				System.out.println("ERROR: FAMILY: "+"US04:"+fam.id+":"+"divorceDate"+divorce+" occurs in the future");
-				System.out.println("ERROR: FAMILY: "+"US04:"+fam.id+":"+"marriageDate"+marry+" occurs in the future");
+				System.out.println("ERROR: FAMILY: US04: "+ fam.id +" marriageDate " + marry + " should before divorceDate " + divorce );
 			}
 		}
 		}

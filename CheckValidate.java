@@ -20,7 +20,7 @@ public class CheckValidate {
 					String death = individual.death;
 					String birth = individual.birthday;
 					if (format.parse(birth).after(format.parse(death))) {
-						System.out.println("ERROR: INDIVIDUAL: US03: " + individual.id + " Died " + individual.death + "before born " + individual.birthday);
+						System.out.println("ERROR: INDIVIDUAL: US03: " + individual.id + " Died " + individual.death + " before born " + individual.birthday);
 					}
 				}
 			}
