@@ -30,39 +30,35 @@ public class CheckValidate {
 	}
 	
 	// US06: Check if divorce is before death
-	public void DivorceBeforeDeath(List<Family> families, List<Individual> individuals) {
-		try {
-			for (Family family : families) {
-				if (family.divorce_date != null) {
-					String divorce = family.divorce_date;
-					String deathOfHusb = null;
-					String deathOfWife = null;
-					Individual husband = null;
-					Individual wife = null;
-					for (Individual individual : individuals) {
-						if (individual.id.equals(family.husband_id)) {
-							husband = individual;
-							deathOfHusb = individual.death;
-							break;
-						}
-					}
-					for (Individual individual : individuals) {
-						if (individual.id.equals(family.wife_id)) {
-							wife = individual;
-							deathOfWife = individual.death;
-							break;
-						}
-					}
-					if (deathOfHusb != null && format.parse(divorce).after(format.parse(deathOfHusb))) {
-						System.out.println("ERROR: FAMILY: US06: " + family.id + " Divorced " + family.divorce_date + " after husband's (" + husband.id + ") death on " + husband.death);
-					}
-					if (deathOfWife != null && format.parse(divorce).after(format.parse(deathOfWife))) {
-						System.out.println("ERROR: FAMILY: US06: " + family.id + " Divorced " + family.divorce_date + " after wife's (" + wife.id + ") death on " + wife.death);
+	public void DivorceBeforeDeath(List<Family> families, List<Individual> individuals) throws java.text.ParseException {
+		for (Family family : families) {
+			if (family.divorce_date != null) {
+				String divorce = family.divorce_date;
+				String deathOfHusb = null;
+				String deathOfWife = null;
+				Individual husband = null;
+				Individual wife = null;
+				for (Individual individual : individuals) {
+					if (individual.id.equals(family.husband_id)) {
+						husband = individual;
+						deathOfHusb = individual.death;
+						break;
 					}
 				}
+				for (Individual individual : individuals) {
+					if (individual.id.equals(family.wife_id)) {
+						wife = individual;
+						deathOfWife = individual.death;
+						break;
+					}
+				}
+				if (deathOfHusb != null && format.parse(divorce).after(format.parse(deathOfHusb))) {
+					System.out.println("ERROR: FAMILY: US06: " + family.id + " Divorced " + family.divorce_date + " after husband's (" + husband.id + ") death on " + husband.death);
+				}
+				if (deathOfWife != null && format.parse(divorce).after(format.parse(deathOfWife))) {
+					System.out.println("ERROR: FAMILY: US06: " + family.id + " Divorced " + family.divorce_date + " after wife's (" + wife.id + ") death on " + wife.death);
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }
