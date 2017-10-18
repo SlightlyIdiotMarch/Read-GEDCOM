@@ -20,7 +20,7 @@ import java.util.Locale;
 
 
 public class GEDCOMParser {
-	public static void parse(String file, List<Individual> indis, List<Family> families) {
+	public static void parse(String file, List<Individual> indis, List<Family> families) throws IOException {
 		String[] k = new String[17];
 		k[0] = "INDI";
 		k[1] = "NAME";
@@ -40,14 +40,14 @@ public class GEDCOMParser {
 		k[15] = "TRLR";
 		k[16] = "NOTE";
 
-
 		File f = new File(file);
-
-		Individual indi = null;
-		Family family = null;
-		try (FileInputStream iStream = new FileInputStream(f);
+		try (
+			FileInputStream iStream = new FileInputStream(f);
 				InputStreamReader rStream = new InputStreamReader(iStream);
 				BufferedReader bReader = new BufferedReader(rStream);) {
+			Individual indi = null;
+			Family family = null;
+
 			String content = null;
 			while ((content = bReader.readLine()) != null) {
 				String content_1 = content.trim();
@@ -136,11 +136,6 @@ public class GEDCOMParser {
 
 				}
 			}
-			bReader.close();
-		} catch (FileNotFoundException e) {
-
-		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
 	}
 	
