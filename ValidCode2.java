@@ -7,103 +7,97 @@ import java.util.List;
 
 public class ValidCode2 {
 	public static void main(String[] arge) {
-
-		String address = "src/Project01.ged";
-
-		List<Individual> indi_list = new ArrayList<>();
-		List<Family> family_list = new ArrayList<>();
-		GEDCOMParser.parse(address, indi_list, family_list);
-		CheckValidate cv = new CheckValidate();
-		// sortIndi(indi_list);
-		System.out.println("Individuals");
-		printIndiDiv();
-		printIndi("ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse");
-		printIndiDiv();
-		for (Individual indi : indi_list) {
-			String spouse1 = "";
-			ArrayList<Family> fa = UtilityZS.getFamiliesByIndiId(indi, family_list);
-			if (fa != null && fa.size() > 0) {
-				spouse1 += "{";
-				for (Family family : fa) {
-					if (spouse1.length() > 1) {
-						spouse1 += ",";
+		try {
+			String address = "src/Project01.ged";
+			List<Individual> indi_list = new ArrayList<>();
+			List<Family> family_list = new ArrayList<>();
+			GEDCOMParser.parse(address, indi_list, family_list);
+			CheckValidate cv = new CheckValidate();
+			System.out.println("Individuals");
+			printIndiDiv();
+			printIndi("ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse");
+			printIndiDiv();
+			for (Individual indi : indi_list) {
+				String spouse1 = "";
+				ArrayList<Family> fa = UtilityZS.getFamiliesByIndiId(indi, family_list);
+				if (fa != null && fa.size() > 0) {
+					spouse1 += "{";
+					for (Family family : fa) {
+						if (spouse1.length() > 1) {
+							spouse1 += ",";
+						}
+						if (indi.sex.equals("M")) {
+							spouse1 += "'" + family.wife_id + "'";
+						} else {
+							spouse1 += "'" + family.husband_id + "'";
+						}
 					}
-					if (indi.sex.equals("M")) {
-						spouse1 += "'" + family.wife_id + "'";
-					} else {
-						spouse1 += "'" + family.husband_id + "'";
-					}
+					spouse1 += "}";
 				}
-				spouse1 += "}";
-			}
-			String age = "";
-			try {
+				String age = "";
 				if (indi.death == null) {
 					if (UtilityZS.processDate(indi.birthday).before((new Date()))) {
 						age = String.valueOf(UtilityZS.getAge(UtilityZS.processDate(indi.birthday)));
 					}
 				}
-			} catch (ParseException e) {
-				e.printStackTrace();
+				String alive = "";
+				String death = "";
+				if (indi.death != null) {
+					alive = "false";
+					death = indi.death;
+				} else {
+					alive = "alive";
+					death = "NA";
+				}
+				printIndi(indi.id, indi.name, indi.sex, indi.birthday, String.valueOf(age), alive, death,
+						indi.fChild != null ? indi.fChild : "None", spouse1 == "" ? "NA" : spouse1);
 			}
-			String alive = "";
-			String death = "";
-			if (indi.death != null) {
-				alive = "false";
-				death = indi.death;
-			} else {
-				alive = "alive";
-				death = "NA";
-			}
-			printIndi(indi.id, indi.name, indi.sex, indi.birthday, String.valueOf(age), alive, death,
-					indi.fChild != null ? indi.fChild : "None", spouse1 == "" ? "NA" : spouse1);
-		}
-		printIndiDiv();
-		System.out.println();
-		System.out.println("Family");
-		printFamDiv();
-		printFam("ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children");
-		printFamDiv();
-		for (Family fam : family_list) {
+			printIndiDiv();
+			System.out.println();
+			System.out.println("Family");
+			printFamDiv();
+			printFam("ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children");
+			printFamDiv();
+			for (Family fam : family_list) {
 
-			String marriage_date = fam.marriage_date == null ? "NA" : fam.marriage_date;
-			String divorced_date = fam.divorce_date == null ? "NA" : fam.divorce_date;
-			StringBuffer children = new StringBuffer();
-			if (fam.child_ids != null) {
-				children.append("{");
-				for (String id : fam.child_ids) {
-					if (children.length() > 1) {
-						children.append(",");
+				String marriage_date = fam.marriage_date == null ? "NA" : fam.marriage_date;
+				String divorced_date = fam.divorce_date == null ? "NA" : fam.divorce_date;
+				StringBuffer children = new StringBuffer();
+				if (fam.child_ids != null) {
+					children.append("{");
+					for (String id : fam.child_ids) {
+						if (children.length() > 1) {
+							children.append(",");
+						}
+						children.append("'");
+						children.append(id);
+						children.append("'");
 					}
-					children.append("'");
-					children.append(id);
-					children.append("'");
+					children.append("}");
 				}
-				children.append("}");
+				String husband_name = "NA";
+				String wife_name = "NA";
+				for (Individual indi : indi_list) {
+					if (indi.id.equals(fam.husband_id)) {
+						husband_name = indi.name;
+					}
+					if (indi.id.equals(fam.wife_id)) {
+						wife_name = indi.name;
+					}
+				}
+				printFam(fam.id, marriage_date, divorced_date, fam.husband_id, husband_name, fam.wife_id, wife_name,
+						(children.length() == 0) ? "NA" : (children.toString()));
 			}
-			String husband_name = "NA";
-			String wife_name = "NA";
-			for (Individual indi : indi_list) {
-				if (indi.id.equals(fam.husband_id)) {
-					husband_name = indi.name;
-				}
-				if (indi.id.equals(fam.wife_id)) {
-					wife_name = indi.name;
-				}
-			}
-			printFam(fam.id, marriage_date, divorced_date, fam.husband_id, husband_name, fam.wife_id, wife_name,
-					(children.length() == 0) ? "NA" : (children.toString()));
-		}
-		printFamDiv();
-		try {
+			printFamDiv();
 			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
 			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 			cv.BirthBeforeDeath(indi_list);
 			cv.DivorceBeforeDeath(family_list, indi_list);
 			Check.beforeCurrent(indi_list, family_list);
 			Check.dateBeforeMarriage(family_list);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 
