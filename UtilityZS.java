@@ -44,9 +44,6 @@ public class UtilityZS {
 		    Calendar today = Calendar.getInstance();
 		    Calendar birthDate = Calendar.getInstance();
 		    birthDate.setTime(dateOfBirth);
-		    if (birthDate.after(today)) {
-		        throw new IllegalArgumentException("You don't exist yet");
-		    }
 		    int todayYear = today.get(Calendar.YEAR);
 		    int birthDateYear = birthDate.get(Calendar.YEAR);
 		    int todayDayOfYear = today.get(Calendar.DAY_OF_YEAR);

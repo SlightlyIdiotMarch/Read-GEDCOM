@@ -8,6 +8,7 @@ import java.util.List;
 public class ValidCode2 {
 	public static void main(String[] arge) {
 		try {
+			String address = "C:\\Users\\shizekang\\Desktop\\cs-555\\Project01.ged";
 			String address = "src/Project01.ged";
 			List<Individual> indi_list = new ArrayList<>();
 			List<Family> family_list = new ArrayList<>();
@@ -47,6 +48,7 @@ public class ValidCode2 {
 					death = indi.death;
 				} else {
 					alive = "alive";
+					death = "NA";				
 					death = "NA";
 				}
 				printIndi(indi.id, indi.name, indi.sex, indi.birthday, String.valueOf(age), alive, death,
@@ -89,6 +91,11 @@ public class ValidCode2 {
 						(children.length() == 0) ? "NA" : (children.toString()));
 			}
 			printFamDiv();
+			System.out.println(indi_list.get(6).fSpouse);
+			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
+			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
+			UserStorySprint1.marrageAfterFourteen(indi_list, family_list);
+			UserStorySprint1.multipleBirth(family_list);
 			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
 			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 			cv.BirthBeforeDeath(indi_list);
@@ -133,6 +140,7 @@ public class ValidCode2 {
 		System.out.println("+" + Utils.getFillString("", 5, "-") + "+" + Utils.getFillString("", 15, "-") + "+"
 				+ Utils.getFillString("", 15, "-") + "+" + Utils.getFillString("", 16, "-") + "+"
 				+ Utils.getFillString("", 22, "-") + "+" + Utils.getFillString("", 16, "-") + "+"
+				+ Utils.getFillString("", 22, "-") + "+" + Utils.getFillString("", 50, "-") + "+");
 				+ Utils.getFillString("", 22, "-") + "+" + Utils.getFillString("", 20, "-") + "+");
 	}
 
@@ -141,6 +149,7 @@ public class ValidCode2 {
 		System.out.println("|" + Utils.getFillString(id, 5, " ") + "|" + Utils.getFillString(married, 15, " ") + "|"
 				+ Utils.getFillString(divorced, 15, " ") + "|" + Utils.getFillString(husband_id, 16, " ") + "|"
 				+ Utils.getFillString(husband_name, 22, " ") + "|" + Utils.getFillString(wife_id, 16, " ") + "|"
+				+ Utils.getFillString(wife_name, 22, " ") + "|" + Utils.getFillString(children, 50, " ") + "|");
 				+ Utils.getFillString(wife_name, 22, " ") + "|" + Utils.getFillString(children, 20, " ") + "|");
 	}
 }
