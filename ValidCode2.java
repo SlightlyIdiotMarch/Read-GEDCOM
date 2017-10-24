@@ -8,7 +8,6 @@ import java.util.List;
 public class ValidCode2 {
 	public static void main(String[] arge) {
 		try {
-			String address = "C:\\Users\\shizekang\\Desktop\\cs-555\\Project01.ged";
 			String address = "src/Project01.ged";
 			List<Individual> indi_list = new ArrayList<>();
 			List<Family> family_list = new ArrayList<>();
@@ -96,10 +95,10 @@ public class ValidCode2 {
 			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 			UserStorySprint1.marrageAfterFourteen(indi_list, family_list);
 			UserStorySprint1.multipleBirth(family_list);
-			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
-			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 			cv.BirthBeforeDeath(indi_list);
 			cv.DivorceBeforeDeath(family_list, indi_list);
+			cv.NoBigamy(family_list);
+			cv.FewerThanFifteenSiblings(family_list);
 			Check.beforeCurrent(indi_list, family_list);
 			Check.dateBeforeMarriage(family_list);
 		}
@@ -141,7 +140,6 @@ public class ValidCode2 {
 				+ Utils.getFillString("", 15, "-") + "+" + Utils.getFillString("", 16, "-") + "+"
 				+ Utils.getFillString("", 22, "-") + "+" + Utils.getFillString("", 16, "-") + "+"
 				+ Utils.getFillString("", 22, "-") + "+" + Utils.getFillString("", 50, "-") + "+");
-				+ Utils.getFillString("", 22, "-") + "+" + Utils.getFillString("", 20, "-") + "+");
 	}
 
 	public static void printFam(String id, String married, String divorced, String husband_id, String husband_name,
@@ -150,6 +148,5 @@ public class ValidCode2 {
 				+ Utils.getFillString(divorced, 15, " ") + "|" + Utils.getFillString(husband_id, 16, " ") + "|"
 				+ Utils.getFillString(husband_name, 22, " ") + "|" + Utils.getFillString(wife_id, 16, " ") + "|"
 				+ Utils.getFillString(wife_name, 22, " ") + "|" + Utils.getFillString(children, 50, " ") + "|");
-				+ Utils.getFillString(wife_name, 22, " ") + "|" + Utils.getFillString(children, 20, " ") + "|");
 	}
 }
