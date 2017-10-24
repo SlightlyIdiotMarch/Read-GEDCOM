@@ -78,18 +78,5 @@ public class UserStorySprint1 {
 		return result;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
