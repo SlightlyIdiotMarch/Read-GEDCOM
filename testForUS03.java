@@ -1,5 +1,4 @@
 
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +9,12 @@ public class testForUS03 {
 
 	@Test
 	public void test() {
-		String address = "src/testfile/test_US03.ged";
 		List<Individual> indi_list = new ArrayList<>();
-		List<Family> family_list = new ArrayList<>();
-		GEDCOMParser.parse(address, indi_list, family_list);
+		Individual individual = new Individual();
+		individual.id = "I1";
+		individual.death = "1 APR 1930";
+		individual.birthday = "5 SEP 1940";
+		indi_list.add(individual);
 		CheckValidate cv = new CheckValidate();
 		cv.BirthBeforeDeath(indi_list);
 	}

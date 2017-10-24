@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import org.junit.Test;
 public class TestMarrBeforeDeath {
 
 	@Test
-	public void test() {
+	public void test() throws IOException {
 		String address = "c:\\users\\shizekang\\desktop\\cs-555\\Project01.ged";
 		List<Individual> indi_list = new ArrayList<>();
 		List<Family> family_list = new ArrayList<>();
