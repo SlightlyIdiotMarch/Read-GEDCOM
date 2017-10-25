@@ -1,7 +1,4 @@
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -90,7 +87,6 @@ public class ValidCode2 {
 						(children.length() == 0) ? "NA" : (children.toString()));
 			}
 			printFamDiv();
-			System.out.println(indi_list.get(6).fSpouse);
 			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
 			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 			UserStorySprint1.marrageAfterFourteen(indi_list, family_list);
@@ -101,6 +97,9 @@ public class ValidCode2 {
 			cv.FewerThanFifteenSiblings(family_list);
 			Check.beforeCurrent(indi_list, family_list);
 			Check.dateBeforeMarriage(family_list);
+			Check.birthBeforeDeathOfParents(family_list, indi_list);
+			Check.siblingsSpace(family_list, indi_list);
+			
 		}
 		catch (Exception e)
 		{
