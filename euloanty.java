@@ -124,7 +124,7 @@ public class euloanty
 				{
 					for (Individual individual : individuals)
 					{
-						if (individual.birthday!=null)
+						if (individual.id.equals(child)&&individual.birthday!=null)
 						{
 							java.util.GregorianCalendar birthdate = UtilityZS.ConvertDateStringToGregorianCalendar(individual.birthday);
 							if (father!=null&&father.birthday!=null)
