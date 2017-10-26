@@ -102,6 +102,7 @@ public class ValidCode2 {
 			euloanty.less_than_150_years_old(indi_list);
 			euloanty.birth_before_marriage_of_parents(family_list,indi_list);
 			euloanty.parents_not_too_old(family_list,indi_list);
+			euloanty.male_last_names(family_list,indi_list);
 		}
 		catch (Exception e)
 		{

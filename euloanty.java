@@ -37,6 +37,13 @@ public class euloanty
 	{
 		return (1+g.get(Calendar.MONTH))+"/"+g.get(Calendar.DAY_OF_MONTH)+"/"+g.get(Calendar.YEAR);
 	}
+	
+	private static String getlastname(String s)
+	{
+		String[] strs = s.split("/");
+		return strs[1];
+	}
+	
 	//US07	Less then 150 years old
 	//Death should be less than 150 years after birth for dead people, and current date should be less than 150 years after birth for all living people
 	public static void less_than_150_years_old(List<Individual> individuals) throws java.text.ParseException
@@ -79,7 +86,7 @@ public class euloanty
 							if(family.marriage_date!=null)
 							{
 								java.util.GregorianCalendar marriagedate = UtilityZS.ConvertDateStringToGregorianCalendar(family.marriage_date);
-								if (birthdate.getTimeInMillis()<marriagedate.getTimeInMillis())
+								if (birthdate.before(marriagedate))
 									System.out.println("ERROR: FAMILY: US08: " + family.id + " Child (" + child + ") is born ("+individual.birthday+") before marriage of parents("+family.marriage_date+")");
 							}
 							if (family.divorce_date!=null)
@@ -130,7 +137,7 @@ public class euloanty
 							{
 								java.util.GregorianCalendar mb = UtilityZS.ConvertDateStringToGregorianCalendar(mother.birthday);
 								if (mb.get(Calendar.YEAR)+60<birthdate.get(Calendar.YEAR))
-									System.out.println("ERROR: FAMILY: US12: " + family.id + " Mother (" + mother.birthday + ") is over 60 years higher than child ("+individual.birthday+")");				
+									System.out.println("ERROR: FAMILY: US12: " + family.id + " Mother (" + mother.birthday + ") is over 60 years higher than child ("+individual.birthday+")");
 							}
 						}
 					}
@@ -140,8 +147,38 @@ public class euloanty
 
 	//US16	Male last names
 	//All male members of a family should have the same last name
-	public static void male_last_names(List<Individual> individuals) throws java.text.ParseException
+	public static void male_last_names(List<Family> families, List<Individual> individuals) throws java.text.ParseException
 	{
-		
+		for (Family family: families)
+		{
+			Individual father=null;
+			if(family.husband_id!=null)
+				for (Individual individual : individuals)
+						if (individual.id.equals(family.husband_id))
+							father = individual;
+			
+			if(father==null||!father.sex.equals("M")||father.name==null)
+				continue;
+			String father_lastname = getlastname(father.name);
+			if(family.child_ids!=null)
+				for (String child : family.child_ids)
+				{
+					for (Individual individual : individuals)
+					{
+						if (individual.id.equals(child))
+						{
+							if(individual.sex.equals("M"))
+							{
+								if(individual.name!=null)
+								{
+									String s = getlastname(individual.name);
+									if(!father_lastname.equals(s))
+										System.out.println("ERROR: FAMILY: US16: " + family.id + " Male member of a family does not have same last name (" + individual.name + "), father is "+father.name);
+								}
+							}
+						}
+					}
+				}
+		}
 	}
 }
