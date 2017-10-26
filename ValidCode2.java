@@ -5,7 +5,7 @@ import java.util.List;
 public class ValidCode2 {
 	public static void main(String[] arge) {
 		try {
-			String address = "src/Project01.ged";
+			String address = "Project01.ged";
 			List<Individual> indi_list = new ArrayList<>();
 			List<Family> family_list = new ArrayList<>();
 			GEDCOMParser.parse(address, indi_list, family_list);
@@ -99,7 +99,7 @@ public class ValidCode2 {
 			Check.dateBeforeMarriage(family_list);
 			Check.birthBeforeDeathOfParents(family_list, indi_list);
 			Check.siblingsSpace(family_list, indi_list);
-			
+			euloanty.less_than_150_years_old(indi_list);
 		}
 		catch (Exception e)
 		{
