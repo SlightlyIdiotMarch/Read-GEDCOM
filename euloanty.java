@@ -51,7 +51,6 @@ public class euloanty
 					java.util.GregorianCalendar deathdate = UtilityZS.ConvertDateStringToGregorianCalendar(individual.death);
 					if (birthdate.get(Calendar.YEAR)+150<deathdate.get(Calendar.YEAR))
 						System.out.println("ERROR: INDIVIDUAL: US07: " + individual.id + " Death date (" + individual.death + ") is higher than 150 years after birth ("+individual.birthday+")");					
-
 				}
 				else
 				{
@@ -98,9 +97,45 @@ public class euloanty
 
 	//US12	Parents not too old
 	//Mother should be less than 60 years older than her children and father should be less than 80 years older than his children
-	public static void parents_not_too_old(List<Individual> individuals) throws java.text.ParseException
+	public static void parents_not_too_old(List<Family> families, List<Individual> individuals) throws java.text.ParseException
 	{
-		
+		for (Family family: families)
+		{
+			Individual father=null;
+			if(family.husband_id!=null)
+				for (Individual individual : individuals)
+						if (individual.id.equals(family.husband_id))
+							father = individual;
+			Individual mother=null;
+			if(family.wife_id!=null)
+				for (Individual individual : individuals)
+						if (individual.id.equals(family.wife_id))
+							mother = individual;
+			
+			if(family.child_ids!=null)
+				for (String child : family.child_ids)
+				{
+					for (Individual individual : individuals)
+					{
+						if (individual.birthday!=null)
+						{
+							java.util.GregorianCalendar birthdate = UtilityZS.ConvertDateStringToGregorianCalendar(individual.birthday);
+							if (father!=null&&father.birthday!=null)
+							{
+								java.util.GregorianCalendar fb = UtilityZS.ConvertDateStringToGregorianCalendar(father.birthday);
+								if (fb.get(Calendar.YEAR)+80<birthdate.get(Calendar.YEAR))
+									System.out.println("ERROR: FAMILY: US12: " + family.id + " Father (" + father.birthday + ") is over 80 years higher than child ("+individual.birthday+")");
+							}
+							if (mother!=null&&mother.birthday!=null)
+							{
+								java.util.GregorianCalendar mb = UtilityZS.ConvertDateStringToGregorianCalendar(mother.birthday);
+								if (mb.get(Calendar.YEAR)+60<birthdate.get(Calendar.YEAR))
+									System.out.println("ERROR: FAMILY: US12: " + family.id + " Mother (" + mother.birthday + ") is over 60 years higher than child ("+individual.birthday+")");				
+							}
+						}
+					}
+				}
+		}
 	}
 
 	//US16	Male last names

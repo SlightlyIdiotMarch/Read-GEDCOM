@@ -101,6 +101,7 @@ public class ValidCode2 {
 			Check.siblingsSpace(family_list, indi_list);
 			euloanty.less_than_150_years_old(indi_list);
 			euloanty.birth_before_marriage_of_parents(family_list,indi_list);
+			euloanty.parents_not_too_old(family_list,indi_list);
 		}
 		catch (Exception e)
 		{
