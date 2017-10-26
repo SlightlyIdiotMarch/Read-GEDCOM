@@ -38,6 +38,12 @@ public class UtilityZS {
 			return resultdate;
 		}
 		
+		public static java.util.GregorianCalendar ConvertDateStringToGregorianCalendar(String date) throws ParseException {
+			java.util.GregorianCalendar calendar = new java.util.GregorianCalendar();
+			calendar.setTime(processDate(date));
+			return calendar;
+		}
+		
 		
 		// compute age
 		public static int getAge(Date dateOfBirth) {
@@ -64,5 +70,6 @@ public class UtilityZS {
 		    }
 		    return age;
 		}
+		
 }
 
