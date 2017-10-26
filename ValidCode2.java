@@ -100,6 +100,7 @@ public class ValidCode2 {
 			Check.birthBeforeDeathOfParents(family_list, indi_list);
 			Check.siblingsSpace(family_list, indi_list);
 			euloanty.less_than_150_years_old(indi_list);
+			euloanty.birth_before_marriage_of_parents(family_list,indi_list);
 		}
 		catch (Exception e)
 		{

@@ -57,7 +57,7 @@ public class euloanty
 				{
 					java.util.GregorianCalendar today = new java.util.GregorianCalendar();
 					if (birthdate.get(Calendar.YEAR)+150<today.get(Calendar.YEAR))
-						System.out.println("ERROR: INDIVIDUAL: US07: " + individual.id + " Current date (" + convertgc(today)+") is higher than 150 years after birth ("+individual.birthday+")");					
+						System.out.println("ERROR: INDIVIDUAL: US07: " + individual.id + " Current date (" + convertgc(today)+") is higher than 150 years after birth ("+individual.birthday+")");
 				}
 			}
 		}
@@ -65,9 +65,35 @@ public class euloanty
 
 	//US08	Birth before marriage of parents
 	//Children should be born after marriage of parents (and not more than 9 months after their divorce)
-	public static void birth_before_marriage_of_parents(List<Individual> individuals) throws java.text.ParseException
+	public static void birth_before_marriage_of_parents(List<Family> families, List<Individual> individuals) throws java.text.ParseException
 	{
-		
+		for (Family family: families)
+		{
+			if(family.child_ids!=null)
+				for (String child : family.child_ids)
+				{
+					for (Individual individual : individuals)
+					{
+						if (individual.id.equals(child))
+						{
+							java.util.GregorianCalendar birthdate = UtilityZS.ConvertDateStringToGregorianCalendar(individual.birthday);
+							if(family.marriage_date!=null)
+							{
+								java.util.GregorianCalendar marriagedate = UtilityZS.ConvertDateStringToGregorianCalendar(family.marriage_date);
+								if (birthdate.getTimeInMillis()<marriagedate.getTimeInMillis())
+									System.out.println("ERROR: FAMILY: US08: " + family.id + " Child (" + child + ") is born ("+individual.birthday+") before marriage of parents("+family.marriage_date+")");
+							}
+							if (family.divorce_date!=null)
+							{
+								java.util.GregorianCalendar divorcedate = UtilityZS.ConvertDateStringToGregorianCalendar(family.divorce_date);
+								if (divorcedate.getTimeInMillis()+3600*1000*24*30*8<birthdate.getTimeInMillis())
+									System.out.println("ERROR: FAMILY: US08: " + family.id + " Child (" + child + ") is born ("+individual.birthday+") after 8 month of divorce of parents("+family.divorce_date+")");
+							}
+
+						}
+					}
+				}
+		}
 	}
 
 	//US12	Parents not too old
@@ -83,5 +109,4 @@ public class euloanty
 	{
 		
 	}
-
 }
