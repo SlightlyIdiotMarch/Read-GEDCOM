@@ -5,7 +5,9 @@ import java.util.List;
 public class ValidCode2 {
 	public static void main(String[] arge) {
 		try {
-			String address = "Project01.ged";
+
+			String address = "./src/Project01.ged";
+      
 			List<Individual> indi_list = new ArrayList<>();
 			List<Family> family_list = new ArrayList<>();
 			GEDCOMParser.parse(address, indi_list, family_list);
@@ -90,11 +92,13 @@ public class ValidCode2 {
 			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
 			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 			UserStorySprint1.marrageAfterFourteen(indi_list, family_list);
-			UserStorySprint1.multipleBirth(family_list);
+			UserStorySprint1.multipleBirth(family_list, indi_list);
 			cv.BirthBeforeDeath(indi_list);
 			cv.DivorceBeforeDeath(family_list, indi_list);
 			cv.NoBigamy(family_list);
 			cv.FewerThanFifteenSiblings(family_list);
+			cv.FirstCousinsNotMarry(family_list, indi_list);
+			cv.UniqueNameAndBirth(indi_list);
 			Check.beforeCurrent(indi_list, family_list);
 			Check.dateBeforeMarriage(family_list);
 			Check.birthBeforeDeathOfParents(family_list, indi_list);
