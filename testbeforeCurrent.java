@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,6 @@ public class testbeforeCurrent {
 		indi.death="2 MAY 2020";
 		fam_List.add(fam);
 		indi_list.add(indi);
-		
 		c.beforeCurrent(indi_list, fam_List);
 	}	
 
