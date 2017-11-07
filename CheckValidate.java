@@ -111,4 +111,57 @@ public class CheckValidate {
 		}
 	}
 	
+	// US19: First cousins should not marry
+	public void FirstCousinsNotMarry(List<Family> families, List<Individual> individuals) {
+		for (Family checkFamily : families) {
+			String hudband_id = checkFamily.husband_id;
+			String wife_id = checkFamily.wife_id;
+			String husband_parent_fid = null;
+			String wife_parent_fid = null;
+			Family husband_parent_F = new Family();
+			Family wife_parent_F = new Family();
+			for (Individual individual : individuals) {
+				if (individual.id.equals(hudband_id)) {
+					husband_parent_fid  = individual.fChild;
+				}
+				if (individual.id.equals(wife_id)) {
+					wife_parent_fid = individual.fChild;
+				}
+			}
+			for (Family family : families) {
+				if (family.id.equals(husband_parent_fid)) {
+					husband_parent_F = family;
+				}
+				if (family.id.equals(wife_parent_fid)) {
+					wife_parent_F = family;
+				}
+			}
+			// If they are from the same family, they are siblings instead of first cousins
+			if (husband_parent_F.equals(wife_parent_F)) {
+				continue;
+			}
+			for (Family family : families) {
+				if (husband_parent_F != null && wife_parent_F != null && family.child_ids != null) {
+					if ((family.child_ids.contains(husband_parent_F.husband_id) || family.child_ids.contains(husband_parent_F.wife_id)) &&
+							(family.child_ids.contains(wife_parent_F.husband_id) || family.child_ids.contains(wife_parent_F.wife_id))) {
+						System.out.println("ERROR: FAMILY: US19: " + checkFamily.id + " the husband and wife are first cousins");
+					}
+				}
+			}
+		}
+	}
+	
+	// US23: Unique name and birth date
+	public void UniqueNameAndBirth(List<Individual> individuals) {
+		for(int i = 0; i < individuals.size(); i++) {
+			Individual indi1 = individuals.get(i);
+			for(int j = i + 1; j < individuals.size(); j++) {
+				Individual indi2 = individuals.get(j);
+				if (indi1.name.equals(indi2.name) && indi1.birthday.equals(indi2.birthday)) {
+					System.out.println("ERROR: INDIVIDUAL: US23: " + indi1.id + " has the same name and birthday as " + indi2.id);
+				}
+			}
+		}
+	}
+	
 }
