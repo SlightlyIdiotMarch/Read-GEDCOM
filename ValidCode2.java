@@ -5,9 +5,7 @@ import java.util.List;
 public class ValidCode2 {
 	public static void main(String[] arge) {
 		try {
-
-			String address = "./src/Project01.ged";
-      
+			String address = "src/Project01.ged";
 			List<Individual> indi_list = new ArrayList<>();
 			List<Family> family_list = new ArrayList<>();
 			GEDCOMParser.parse(address, indi_list, family_list);
@@ -89,6 +87,8 @@ public class ValidCode2 {
 						(children.length() == 0) ? "NA" : (children.toString()));
 			}
 			printFamDiv();
+
+/*		
 			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
 			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 			UserStorySprint1.marrageAfterFourteen(indi_list, family_list);
@@ -106,7 +106,9 @@ public class ValidCode2 {
 			euloanty.less_than_150_years_old(indi_list);
 			euloanty.birth_before_marriage_of_parents(family_list,indi_list);
 			euloanty.parents_not_too_old(family_list,indi_list);
-			euloanty.male_last_names(family_list,indi_list);
+			euloanty.male_last_names(family_list,indi_list);*/
+			UserStorySprint1.siblingNotMarry(family_list, indi_list);
+			UserStorySprint1.uniqueId(family_list, indi_list);
 		}
 		catch (Exception e)
 		{

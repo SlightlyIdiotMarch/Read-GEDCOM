@@ -71,5 +71,14 @@ public class UtilityZS {
 		    return age;
 		}
 		
+		public static Individual getIndividualById(List<Individual> individuals, String id) {
+			for (Individual individual: individuals) {
+				if (id.equals(individual.id)) {
+					return individual;
+				}
+			}
+			return null;
+		}
+		
 }
 
