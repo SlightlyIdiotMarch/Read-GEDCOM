@@ -109,8 +109,8 @@ public class ValidCode2 {
 			euloanty.male_last_names(family_list,indi_list);*/
 			UserStorySprint1.siblingNotMarry(family_list, indi_list);
 			UserStorySprint1.uniqueId(family_list, indi_list);
-            Check.noMarriageToDescendant(family_list);
-            Check.correctGenderForRole(family_list, indi_list);
+            		Check.noMarriageToDescendant(family_list);
+            		Check.correctGenderForRole(family_list, indi_list);
 		}
 		catch (Exception e)
 		{
