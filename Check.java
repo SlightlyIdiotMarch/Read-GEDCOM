@@ -1,6 +1,9 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,7 +24,7 @@ public class Check {
 			if(format.parse(birth).after(format.parse(s))){
 				SimpleDateFormat sdf=new SimpleDateFormat("yyyy MM dd");
 				String birthday=sdf.format(format.parse(indi.birthday))	;
-				System.out.println("ERROR: INDIVIDUAL: "+"US01: "+indi.id+":"+" Birthday "+birthday+" occurs in the future");
+				System.out.println("ERROR: INDIVIDUAL: "+"US01:"+indi.id+":"+"Birthday "+birthday+" occurs in the future");
 			}
 		}
 		
@@ -30,7 +33,7 @@ public class Check {
 			if(format.parse(death).after(format.parse(s))){
 				SimpleDateFormat format1= new SimpleDateFormat("yyyy MM dd",Locale.CHINA);
 				String deathDate=format1.format(format.parse(indi.death));
-				System.out.println("ERROR: INDIVIDUAL: "+"US01: "+indi.id+":"+" Deathdate"+deathDate+" occurs in the future");
+				System.out.println("ERROR: INDIVIDUAL: "+"US01:"+indi.id+":"+"Deathdate"+deathDate+" occurs in the future");
 			}
 			
 		}
@@ -75,7 +78,7 @@ public class Check {
 				SimpleDateFormat sdf=new SimpleDateFormat("yyyy MM d");
 				String marry=sdf.format(format.parse(fam.marriage_date))	;
 				String divorce=sdf.format(format.parse(fam.divorce_date))	;
-				System.out.println("ERROR: FAMILY: "+"US04: "+fam.id+" divorceDate "+divorce+" is before "+"marriageDate "+marry);
+				System.out.println("ERROR: FAMILY: "+"US04:"+fam.id+":"+"divorceDate"+divorce+" is after "+"US04:"+fam.id+":"+"marriageDate"+marry);
 				
 			}
 		}
@@ -96,6 +99,7 @@ public class Check {
 		String childID=null;
 		SimpleDateFormat format=new SimpleDateFormat("d MMM yyyy",Locale.ENGLISH);
 		SimpleDateFormat format1=new SimpleDateFormat("d MM yyyy",Locale.ENGLISH);
+		//Date date=new Date();
 		
 		String[] childTime;
 		String[] fatherTime;
@@ -124,14 +128,14 @@ public class Check {
 					 if(deathDateOfFather!=null){
 					 fatherTime=deathDateOfFather.split(" ");
 	
-					 if(((Integer.parseInt(fatherTime[1])+(Integer.parseInt(fatherTime[2])*12))-(Integer.parseInt(childTime[1]+(Integer.parseInt(childTime[2])*12))))<9){
-						 System.out.println("ERROR: INDIVIDUAL: US09: "+ c + " Children birthday: "+birthDateOfChild+" is after father's deathdate: "+ deathDateOfFather);
+					 if(((Integer.parseInt(fatherTime[1])+(Integer.parseInt(fatherTime[2])*12))-(Integer.parseInt(childTime[1])+(Integer.parseInt(childTime[2])*12)))<9){
+						 System.out.println("ERROR: INDIVIDUAL: US09"+" Children birthday:"+birthDateOfChild+" is after father's deathdate"+ deathDateOfFather);
 					 }
 					 }
 					 if(deathDateOfMother!=null){
 					 motherTime=deathDateOfMother.split(" ");
-					 if(((Integer.parseInt(motherTime[1])+(Integer.parseInt(motherTime[2])*12))-(Integer.parseInt(childTime[1]+(Integer.parseInt(childTime[2])*12))))<9){
-						 System.out.println("ERROR: INDIVIDUAL: US09: "+ c + " Children birthday: "+birthDateOfChild+" is after mother's deathdate: "+ deathDateOfMother);
+					 if(((Integer.parseInt(motherTime[1])+(Integer.parseInt(motherTime[2])*12))-(Integer.parseInt(childTime[1])+(Integer.parseInt(childTime[2])*12)))<9){
+						 System.out.println("ERROR: INDIVIDUAL: US09"+" Children birthday:"+birthDateOfChild+" is after mother's deathdate"+ deathDateOfMother);
 					 }	
 					 }	
 					
@@ -181,9 +185,9 @@ public class Check {
 					if(secondDate!=null&&firstDate!=null){
 					if(Integer.parseInt(secondDate[2])==Integer.parseInt(firstDate[2])){
 						if((Integer.parseInt(secondDate[1])-Integer.parseInt(firstDate[1]))<8||(Integer.parseInt(firstDate[1])-Integer.parseInt(secondDate[1])<8)){
-							System.out.println("ERROR: INDIVIDUAL: US13: " + firstChildID+" and "+secondChildID+" is sibling spacing");
+							System.out.println("ERROR: INDIVIDUAL: US13: "+"ID:"+firstChildID+" and ID: "+secondChildID+" is sibling spacing");
 						}else if((Integer.parseInt(secondDate[0])-Integer.parseInt(firstDate[0]))>1||(Integer.parseInt(firstDate[0])-Integer.parseInt(secondDate[0])>1)){
-							System.out.println("ERROR: INDIVIDUAL: US13: " + firstChildID+" and "+secondChildID+" is sibling spacing");
+							System.out.println("ERROR: INDIVIDUAL: US13: "+"ID:"+firstChildID+" and ID: "+secondChildID+" is sibling spacing");
 						}
 						
 					}
@@ -205,6 +209,166 @@ public class Check {
 		
 		
 	}
+	
+	
+	//US17 Parents should not marry any of their descendants
+	/*public static void noMarriageToDescendant(List<Family> family_list){
+		
+		for(Family fami:family_list){
+			if(fami.child_ids!=null){
+				for(int i=0;i<fami.child_ids.size();i++){
+					if(fami.child_ids.get(i).equals(fami.husband_id)){
+						System.out.println("ERROR: FAMILY: US17: Child "+ fami.child_ids.get(i)+" should not marry with mother "+fami.wife_id);
+					}
+					if(fami.child_ids.get(i).equals(fami.wife_id)){
+						System.out.println("ERROR: Child: US17: "+ fami.child_ids.get(i)+" should not marry with father "+fami.husband_id);
+					}
+				}
+			}
+		}		
+	}*/
+	
+	
+	//US21 Husband in family should be male and wife in family should be female
+	public static void correctGenderForRole(List<Family> family_list,List<Individual> individual_list){
+		//List<String> duplicateID=new ArrayList<String>();
+		HashSet<String> duplicateIDtest=new HashSet<String>();
+		for(Family fami:family_list){
+			for(Individual indi:individual_list){
+				if(fami.husband_id.equals(indi.id)){
+					if(indi.sex.equals("F")){
+						if(duplicateIDtest.isEmpty()){
+							System.out.println("ERROR: INDIVIDUAL: US21: individual(husband)"+indi.id+" should be male");
+							duplicateIDtest.add(indi.id);
+						}else{
+							if(!duplicateIDtest.contains(indi.id)){
+							System.out.println("ERROR: INDIVIDUAL: US21: individual(husband)"+indi.id+" should be male");
+							duplicateIDtest.add(indi.id);
+							}	
+						}
+					}
+				}
+				
+				if(fami.wife_id.equals(indi.id)){
+					if(indi.sex.equals("M")){
+						if(duplicateIDtest.isEmpty()){
+							System.out.println("ERROR: INDIVIDUAL: US21: individual(wife)"+indi.id+" should be female");
+							duplicateIDtest.add(indi.id);
+						}else{
+							if(!duplicateIDtest.contains(indi.id)){
+								System.out.println("ERROR: INDIVIDUAL: US21: individual(wife)"+indi.id+" should be female");
+								duplicateIDtest.add(indi.id);
+							}
+						}	
+					}
+				}
+			
+			}
+		
+		}
+	}
+	
+	/*public static void  noMarriageToDescendant(List<Family> family_list,List<Individual> individual_list){
+		HashSet<String> duplicateID=new HashSet<String>();
+		for(Family family:family_list){
+			for(Individual individual:individual_list){
+				if(family.husband_id.equals(individual.id)){
+					for(Family searchOriginalFamily:family_list){
+					    if(individual.fChild!=null){
+					    	if(individual.fChild.equals(searchOriginalFamily.id)&&individual.id.equals(searchOriginalFamily.husband_id)){
+					    		System.out.println("ERROR: FAMILY: US17: Child "+ individual.id+" should not marry with mother "+searchOriginalFamily.wife_id);
+					    	}
+					    }else{
+					    	if(family.child_ids!=null){
+					    		for(int i=0; i<family.child_ids.size();i++){
+					    			if(family.husband_id.equals(family.child_ids.get(i))){
+					    				if(!duplicateID.contains(family.husband_id)){
+					    				System.out.println("ERROR: FAMILY: US17: Child "+ family.child_ids.get(i)+" should not marry with mother "+family.wife_id);
+					    				duplicateID.add(family.husband_id);
+					    				}
+					    			}
+					    		}
+					    	}
+					    }
+					}
+				}
+			}
+		}
+		
+		
+	}*/
+	
+	//US17 Parents should not marry any of their descendants
+	public static void  noMarriageToDescendant(List<Family> family_list){
+		
+		HashSet<String> husbandDuplicateID= new HashSet<String>();
+		for(Family family:family_list){
+			HashSet<String> wife=new HashSet<String>();
+			for(Family findAllWife:family_list){
+				if(family.husband_id.equals(findAllWife.husband_id)){
+					if(!wife.contains(findAllWife.wife_id)){
+						wife.add(findAllWife.wife_id);
+					}
+				}
+			}
+			
+			for(Family findErrorChildren:family_list){
+				HashSet<String> childrenDuplicateID=new HashSet<String>();
+				if(wife.contains(findErrorChildren.wife_id)){
+					if(findErrorChildren.child_ids!=null){
+						for(int i=0;findErrorChildren.child_ids.size()>i;i++){
+							if(family.husband_id.equals(findErrorChildren.child_ids.get(i))){
+								if(!husbandDuplicateID.contains(family.husband_id)){
+									husbandDuplicateID.add(family.husband_id);
+									if(husbandDuplicateID.contains(family.husband_id)&&!childrenDuplicateID.contains(findErrorChildren.child_ids.get(i))){
+										System.out.println("ERROR: FAMILY: US17: Child "+ family.husband_id+" should not marry with mother "+findErrorChildren.wife_id);
+										childrenDuplicateID.add(findErrorChildren.child_ids.get(i));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		
+		HashSet<String> wifeDuplicateID=new HashSet<String>();
+		for(Family family:family_list){
+			HashSet<String> husband=new HashSet<String>();
+			for(Family findAllHusband:family_list){
+				if(family.wife_id.equals(findAllHusband.wife_id)){
+					if(!husband.contains(findAllHusband.husband_id)){
+						husband.add(findAllHusband.husband_id);
+					}
+				}
+			}
+			
+			for(Family findErrorChildren:family_list){
+				HashSet<String> childrenDuplicateID=new HashSet<String>();
+				if(husband.contains(findErrorChildren.husband_id)){
+					if(findErrorChildren.child_ids!=null){
+						for(int i=0;findErrorChildren.child_ids.size()>i;i++){
+							if(family.wife_id.equals(findErrorChildren.child_ids.get(i))){
+								if(!wifeDuplicateID.contains(family.wife_id)){
+									wifeDuplicateID.add(family.wife_id);
+									if(wifeDuplicateID.contains(family.wife_id)&&!childrenDuplicateID.contains(findErrorChildren.child_ids.get(i))){
+										System.out.println("ERROR: FAMILY: US17: Child "+ family.wife_id+" should not marry with father "+findErrorChildren.husband_id);
+										childrenDuplicateID.add(findErrorChildren.child_ids.get(i));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+	}
+	
+	
 	
 	
 	

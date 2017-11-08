@@ -1,7 +1,9 @@
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserStorySprint1 {
 	
@@ -76,6 +78,58 @@ public class UserStorySprint1 {
 			}
 		}
 		return result;
+	}
+	
+	//US18 Siblings should not marry
+	public static boolean siblingNotMarry(List<Family> families, List<Individual> individuals) {
+		boolean b = true;
+		for (Family family: families) {
+			String husbandid = family.husband_id;
+			Individual husband = UtilityZS.getIndividualById(individuals, husbandid);
+			String wifeid = family.wife_id;
+			Individual wife = UtilityZS.getIndividualById(individuals, wifeid);
+			if (husband != null && wife != null) {
+				if (husband.fChild != null && wife.fChild != null) {
+					if (husband.fChild.equals(wife.fChild)) {
+						b = false;
+						System.out.println("ERROR: FAMILY: US18: No." + family.id + " family's husband(" + husbandid + ") and wife(" + wifeid + ") are sibling");
+					}
+				}
+			}
+		}
+		return b;
+	}
+	
+	//US22 Unique Id
+	public static boolean uniqueId(List<Family> families, List<Individual> individuals) {
+		boolean b = true;
+		Set<String> individualset = new HashSet<String>();
+		Set<String> repeatcount = new HashSet<String>();
+		for (Individual individual: individuals) {
+			if (individualset.contains(individual.id)) {
+				if (!repeatcount.contains(individual.id)) {
+					b = false;
+					System.out.println("ERROR: INDIVIDUAL: US22: This Id is not unique: " + individual.id);
+					repeatcount.add(individual.id);	
+				}
+			} else {
+				individualset.add(individual.id);
+			}
+		}
+		Set<String> familyset = new HashSet<String>();
+		repeatcount = new HashSet<String>();
+		for (Family family: families) {
+			if (familyset.contains(family.id)) {
+				if (!repeatcount.contains(family.id)) {
+					b = false;
+					System.out.println("ERROR: FAMILY: US22: This Id is not unique: " + family.id);
+					repeatcount.add(family.id);
+				}
+			} else {
+				familyset.add(family.id);
+			}
+		}
+		return b;
 	}
 	
 
