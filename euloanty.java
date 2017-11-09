@@ -181,4 +181,90 @@ public class euloanty
 				}
 		}
 	}
+	private static Individual get_individual(List<Individual> individuals,String s) throws java.text.ParseException
+	{
+		for(Individual individual : individuals)
+			if(individual.id.equals(s))
+				return individual;
+		return null;
+	}
+
+	//US20	Aunts and uncles
+	//Aunts and uncles should not marry their nieces or nephews
+	public static void aunts_and_uncles(List<Family> families, List<Individual> individuals) throws java.text.ParseException
+	{
+		for (Family family: families)
+		{
+			if(family.child_ids==null)
+				continue;
+			for (String child1 : family.child_ids)
+			{
+				Individual c1=get_individual(individuals,child1);
+				if(c1==null)
+					continue;
+				for (String child2 : family.child_ids)
+					if(child1!=child2)
+					{
+						Individual c2=get_individual(individuals,child2);
+						if(c2==null)
+							continue;
+						for (Family cofc1 : families)
+							if(cofc1!=null)
+							{
+								if((cofc1.husband_id.equals(c1)&&cofc1.wife_id.equals(c2))||(cofc1.wife_id.equals(c1)&&cofc1.husband_id.equals(c2)))
+								{
+									System.out.println("ERROR: FAMILY: US20: " + family.id + " Aunts or uncles marry their nieces or nephews");
+								}
+							}
+					}
+			}
+		}
+	}
+
+	//US24	Unique families by spouses
+	//No more than one family with the same name and birth date should appear in a family
+	public static void unique_families_by_spouses(List<Family> families, List<Individual> individuals) throws java.text.ParseException
+	{
+		for (Family family: families)
+		{
+			Individual husband=get_individual(individuals,family.husband_id);
+			Individual wife=get_individual(individuals,family.wife_id);
+			if(husband!=null && wife!=null && husband.name.equals(wife.name) && husband.birthday.equals(wife.birthday))
+				System.out.println("ERROR: FAMILY: US24: " + family.id + " More than one family the same name and birth date appears in a family");
+			if(family.child_ids==null)
+				continue;
+			for (String child1 : family.child_ids)
+			{
+				Individual c=get_individual(individuals,child1);
+				if(c==null)
+					continue;
+				if(husband!=null && husband.name.equals(c.name) && husband.birthday.equals(c.birthday))
+				{
+					System.out.println("ERROR: FAMILY: US24: " + family.id + " More than one family the same name and birth date appears in a family");
+					break;
+				}
+				if(wife!=null && wife.name.equals(c.name) && wife.birthday.equals(c.birthday))
+				{
+					System.out.println("ERROR: FAMILY: US24: " + family.id + " More than one family the same name and birth date appears in a family");
+					break;
+				}
+				boolean hh=false;
+				for (String child2 : family.child_ids)
+				{
+					if(child1!=child2)
+					{
+						Individual c1=get_individual(individuals,child1);
+						if(c1!=null && c.name.equals(c1.name)&&c.birthday.equals(c1.birthday))
+						{
+							System.out.println("ERROR: FAMILY: US24: " + family.id + " More than one family the same name and birth date appears in a family");
+							hh=true;
+							break;
+						}
+					}
+				}
+				if(hh)
+					break;
+			}
+		}
+	}
 }
