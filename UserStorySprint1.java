@@ -132,5 +132,63 @@ public class UserStorySprint1 {
 		return b;
 	}
 	
+	//US26
+	public static boolean correspondEntry(List<Family> families, List<Individual> individuals) {
+		boolean b = true;
+		Set<String> names = UtilityZS.getAllNamesFromFamReco(families);
+		Set<String> individualId = UtilityZS.getAllNamesFromIndiRec(individuals);
+		for (Individual individual: individuals) {
+			if (!names.contains(individual.id)) {
+				b = false;
+				System.out.println("ERROR: INDIVIDUAL: US26: This individual " + individual.id + " has no information in family records");
+			}
+		}
+		for (Family family: families) {
+			if (family.wife_id != null) {
+				if (!individualId.contains(family.wife_id)) {
+					b = false;
+					System.out.println("ERROR: FAMILY: US26: This family(" + family.id + ")'s wife(" + family.wife_id +") does not have information in the individual record");
+					
+				}
+			}
+			if (family.husband_id != null) {
+				if (!individualId.contains(family.husband_id)) {
+					b = false;
+					System.out.println("ERROR: FAMILY: US26: This family(" + family.id + ")'s husband(" + family.husband_id +") does not have information in the individual record");
+				}
+			}
+			if (family.child_ids != null) {
+				for (String id: family.child_ids) {
+					if (!individualId.contains(id)) {
+						b = false;
+						System.out.println("ERROR: FAMILY: US26: This family(" + family.id + ")'s child(" + id +") does not have information in the individual record");
+					}
+				}
+			}
+		}
+		return b;
+	}
 
+	//US30
+	public static void listAllMarriedPeople(List<Family> families, List<Individual> individuals) {
+		for (Family family: families) {
+			if (family.divorce_date == null) {
+				Individual husband = UtilityZS.getIndividualById(individuals, family.husband_id);
+				if (husband != null) {
+					if (husband.death == null) {
+						System.out.println("US30: The living married people: " + husband.name);
+					}
+				}
+				Individual wife = UtilityZS.getIndividualById(individuals, family.wife_id);
+				if (wife != null) {
+					if (wife.death == null) {
+						System.out.println("US30: The living married people: " + wife.name);
+					}
+				}
+			}
+			
+		}
+	}
+	
 }
+

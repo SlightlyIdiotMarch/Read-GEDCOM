@@ -164,4 +164,46 @@ public class CheckValidate {
 		}
 	}
 	
+	// US27: Include individual ages
+	public void IncludeIndividualAges(List<Individual> individuals) {
+		try {
+			for (Individual indi : individuals) {
+				String age = "";
+				if (indi.death == null) {
+					if (UtilityZS.processDate(indi.birthday).before((new Date()))) {
+						age = String.valueOf(UtilityZS.getAge(UtilityZS.processDate(indi.birthday)));
+					}
+				}
+				if(age.equals("")) {
+					System.out.println("ERROR: INDIVIDUAL: U27: " + indi.id + " has no age when listing individuals");
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//US31: List living single
+	public void ListLivingSingle(List<Individual> individuals) {
+		try {
+			for (Individual indi : individuals) {
+				if (indi.fSpouse == null || indi.fSpouse.size() == 0) {
+					String age = "";
+					if (indi.death == null) {
+						if (UtilityZS.processDate(indi.birthday).before((new Date()))) {
+							age = String.valueOf(UtilityZS.getAge(UtilityZS.processDate(indi.birthday)));
+						}
+					}
+					if (Integer.valueOf(age) > 30) {
+						System.out.println("LIST: INDIVIDUAL: US31: " + indi.id + " is a living single");
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
