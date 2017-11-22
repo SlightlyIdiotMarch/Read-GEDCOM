@@ -5,7 +5,8 @@ import java.util.List;
 public class ValidCode2 {
 	public static void main(String[] arge) {
 		try {
-			String address = "src/Project01.ged";
+			String address = "Project01.ged";
+      
 			List<Individual> indi_list = new ArrayList<>();
 			List<Family> family_list = new ArrayList<>();
 			GEDCOMParser.parse(address, indi_list, family_list);
@@ -84,7 +85,7 @@ public class ValidCode2 {
 			}
 			printFamDiv();
 
-	
+
 //			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
 //			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
 //			UserStorySprint1.marrageAfterFourteen(indi_list, family_list);
@@ -110,6 +111,7 @@ public class ValidCode2 {
 //			euloanty.unique_families_by_spouses(family_list,indi_list);
 //			euloanty.aunts_and_uncles(family_list, indi_list);
 			cv.ListLivingSingle(indi_list);
+
 		}
 		catch (Exception e)
 		{

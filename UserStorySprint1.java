@@ -1,7 +1,9 @@
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserStorySprint1 {
 	
@@ -78,5 +80,115 @@ public class UserStorySprint1 {
 		return result;
 	}
 	
+	//US18 Siblings should not marry
+	public static boolean siblingNotMarry(List<Family> families, List<Individual> individuals) {
+		boolean b = true;
+		for (Family family: families) {
+			String husbandid = family.husband_id;
+			Individual husband = UtilityZS.getIndividualById(individuals, husbandid);
+			String wifeid = family.wife_id;
+			Individual wife = UtilityZS.getIndividualById(individuals, wifeid);
+			if (husband != null && wife != null) {
+				if (husband.fChild != null && wife.fChild != null) {
+					if (husband.fChild.equals(wife.fChild)) {
+						b = false;
+						System.out.println("ERROR: FAMILY: US18: No." + family.id + " family's husband(" + husbandid + ") and wife(" + wifeid + ") are sibling");
+					}
+				}
+			}
+		}
+		return b;
+	}
+	
+	//US22 Unique Id
+	public static boolean uniqueId(List<Family> families, List<Individual> individuals) {
+		boolean b = true;
+		Set<String> individualset = new HashSet<String>();
+		Set<String> repeatcount = new HashSet<String>();
+		for (Individual individual: individuals) {
+			if (individualset.contains(individual.id)) {
+				if (!repeatcount.contains(individual.id)) {
+					b = false;
+					System.out.println("ERROR: INDIVIDUAL: US22: This Id is not unique: " + individual.id);
+					repeatcount.add(individual.id);	
+				}
+			} else {
+				individualset.add(individual.id);
+			}
+		}
+		Set<String> familyset = new HashSet<String>();
+		repeatcount = new HashSet<String>();
+		for (Family family: families) {
+			if (familyset.contains(family.id)) {
+				if (!repeatcount.contains(family.id)) {
+					b = false;
+					System.out.println("ERROR: FAMILY: US22: This Id is not unique: " + family.id);
+					repeatcount.add(family.id);
+				}
+			} else {
+				familyset.add(family.id);
+			}
+		}
+		return b;
+	}
+	
+	//US26
+	public static boolean correspondEntry(List<Family> families, List<Individual> individuals) {
+		boolean b = true;
+		Set<String> names = UtilityZS.getAllNamesFromFamReco(families);
+		Set<String> individualId = UtilityZS.getAllNamesFromIndiRec(individuals);
+		for (Individual individual: individuals) {
+			if (!names.contains(individual.id)) {
+				b = false;
+				System.out.println("ERROR: INDIVIDUAL: US26: This individual " + individual.id + " has no information in family records");
+			}
+		}
+		for (Family family: families) {
+			if (family.wife_id != null) {
+				if (!individualId.contains(family.wife_id)) {
+					b = false;
+					System.out.println("ERROR: FAMILY: US26: This family(" + family.id + ")'s wife(" + family.wife_id +") does not have information in the individual record");
+					
+				}
+			}
+			if (family.husband_id != null) {
+				if (!individualId.contains(family.husband_id)) {
+					b = false;
+					System.out.println("ERROR: FAMILY: US26: This family(" + family.id + ")'s husband(" + family.husband_id +") does not have information in the individual record");
+				}
+			}
+			if (family.child_ids != null) {
+				for (String id: family.child_ids) {
+					if (!individualId.contains(id)) {
+						b = false;
+						System.out.println("ERROR: FAMILY: US26: This family(" + family.id + ")'s child(" + id +") does not have information in the individual record");
+					}
+				}
+			}
+		}
+		return b;
+	}
 
+	//US30
+	public static void listAllMarriedPeople(List<Family> families, List<Individual> individuals) {
+		for (Family family: families) {
+			if (family.divorce_date == null) {
+				Individual husband = UtilityZS.getIndividualById(individuals, family.husband_id);
+				if (husband != null) {
+					if (husband.death == null) {
+						System.out.println("US30: The living married people: " + husband.name);
+					}
+				}
+				Individual wife = UtilityZS.getIndividualById(individuals, family.wife_id);
+				if (wife != null) {
+					if (wife.death == null) {
+						System.out.println("US30: The living married people: " + wife.name);
+					}
+				}
+			}
+			
+		}
+	}
+	
 }
+

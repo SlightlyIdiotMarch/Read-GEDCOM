@@ -4,10 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public class UtilityZS {
 	public static ArrayList<Family> getFamiliesByIndiId(Individual individual, List<Family> families) {
@@ -46,34 +44,6 @@ public class UtilityZS {
 			return calendar;
 		}
 		
-		
-		public static Set<String> getAllNamesFromFamReco(List<Family> families) {
-			Set<String> set = new HashSet<String>();
-			for (Family family: families) {
-				if (family.husband_id != null) {
-					set.add(family.husband_id);
-				}
-				if (family.wife_id != null) {
-					set.add(family.wife_id);
-				}
-				if (family.child_ids != null) {
-					for (String id: family.child_ids) {
-						set.add(id);
-					}
-				}
-			}
-			return set;
-		}
-		
-		public static Set<String> getAllNamesFromIndiRec(List<Individual> individuals) {
-			Set<String> set = new HashSet<String>();
-			for (Individual individual: individuals) {
-				if (individual.id != null) {
-					set.add(individual.id);
-				}
-			}
-			return set;
-		}
 		
 		// compute age
 		public static int getAge(Date dateOfBirth) {
