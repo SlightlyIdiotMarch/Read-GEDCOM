@@ -111,6 +111,10 @@ public class ValidCode2 {
 			euloanty.unique_families_by_spouses(family_list,indi_list);
 			euloanty.aunts_and_uncles(family_list,indi_list);
 
+      Check.uniqueFirstNamesInFamilies(family_list, indi_list);
+      Check.listDeceased(family_list, indi_list);
+
+
 /*			UserStorySprint1.siblingNotMarry(family_list, indi_list);
 			UserStorySprint1.uniqueId(family_list, indi_list);
      	Check.noMarriageToDescendant(family_list);

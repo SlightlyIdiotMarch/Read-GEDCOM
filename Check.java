@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Check {
 
@@ -365,17 +366,94 @@ public class Check {
 			}
 		}
 		
+			
+		
+		
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+//US25 No more than one child with the same name and birth date should appear in a family
+		public static void uniqueFirstNamesInFamilies(List<Family> family_list, List<Individual> individual_list ){
+		
+ 			for(Family findEveryFamily: family_list){
+ 				HashMap<String,String> childrenID = new HashMap<>();
+ 				HashMap<String,String> childrenFirstName = new HashMap<>();
+ 				HashMap<String,String> childrenBirthday = new HashMap<>();
+ 				HashMap<String,String> duplicate = new HashMap<>();
+				if(findEveryFamily.child_ids != null){
+					for(String findChildren:findEveryFamily.child_ids){
+						childrenID.put(findChildren,findEveryFamily.id );
+						//System.out.println(findChildren+" "+findEveryFamily.id);
+						for(Individual findID:individual_list){
+							if(childrenID.containsKey(findID.id)){
+								String [] firstName = findID.name.split(" ");
+								String birthday = findID.birthday;
+								childrenBirthday.put(findID.id,birthday);
+								childrenFirstName.put(findID.id,firstName[0]);
+								//System.out.println(findID.id+" "+firstName[0]);
+								//System.out.println(findID.id+" "+birthday);
+							}
+						}
+						
+						for(String check:childrenBirthday.keySet()){
+							for(String check1:childrenBirthday.keySet()){
+								if((check != check1)){
+									if(childrenBirthday.get(check).equals(childrenBirthday.get(check1))){
+										if(childrenFirstName.get(check).equals(childrenFirstName.get(check1))){
+											if(childrenID.get(check).equals(childrenID.get(check1))){
+												if(check1 == duplicate.get(check) || check == duplicate.get(check1)){
+													continue;
+												}else{
+												duplicate.put(check, check1);
+												duplicate.put(check1, check);
+												System.out.println("ERROR: INDIVIDUAL: US25: "+check+ " and " +check1 +" has the same FirstName and birthday in family "+ childrenID.get(check));
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						
+						
+						
+					}
+				}
+			}
+			
+			
+		
+			
+		}	
+		
+//US29 List deceased marriage
+		public static void listDeceased(List<Family> family_list, List<Individual> individual_list){
+			for(Family family: family_list){
+				for(Individual individual: individual_list){
+					if(family.divorce_date == null){
+						if(family.husband_id.equals(individual.id)){
+							if(individual.death!=null){
+								System.out.println("ERROR: INDIVIDUAL: US29: "+ "husband"+family.husband_id+" has died");
+							}
+						}
+						if(family.wife_id.equals(individual.id)) {
+							if(individual.death != null){
+								System.out.println( "ERROR: INDIVIDUAL: US29: "+ "wife"+family.wife_id+" has died");
+							}
+						}
+					}
+				}
+			}
+			
+			
+			
+					
+		}
+		
+		
+		
+		
 }
+
+
+		
