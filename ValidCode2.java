@@ -6,6 +6,7 @@ public class ValidCode2 {
 	public static void main(String[] arge) {
 		try {
 			String address = "Project01.ged";
+      
 			List<Individual> indi_list = new ArrayList<>();
 			List<Family> family_list = new ArrayList<>();
 			GEDCOMParser.parse(address, indi_list, family_list);
@@ -32,11 +33,7 @@ public class ValidCode2 {
 					spouse1 += "}";
 				}
 				String age = "";
-				if (indi.death == null) {
-					if (UtilityZS.processDate(indi.birthday).before((new Date()))) {
-						age = String.valueOf(UtilityZS.getAge(UtilityZS.processDate(indi.birthday)));
-					}
-				}
+				age = cv.IncludeIndividualAges(indi);
 				String alive = "";
 				String death = "";
 				if (indi.death != null) {
@@ -88,37 +85,32 @@ public class ValidCode2 {
 			}
 			printFamDiv();
 
-		
-/*			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
-			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
-			UserStorySprint1.marrageAfterFourteen(indi_list, family_list);
-			UserStorySprint1.multipleBirth(family_list, indi_list);
-			cv.BirthBeforeDeath(indi_list);
-			cv.DivorceBeforeDeath(family_list, indi_list);
-			cv.NoBigamy(family_list);
-			cv.FewerThanFifteenSiblings(family_list);
-			cv.FirstCousinsNotMarry(family_list, indi_list);
-			cv.UniqueNameAndBirth(indi_list);
-			Check.beforeCurrent(indi_list, family_list);
-			Check.dateBeforeMarriage(family_list);
-			Check.birthBeforeDeathOfParents(family_list, indi_list);
-			Check.siblingsSpace(family_list, indi_list);
-			euloanty.less_than_150_years_old(indi_list);
-			euloanty.birth_before_marriage_of_parents(family_list,indi_list);
-			euloanty.parents_not_too_old(family_list,indi_list);
-			euloanty.male_last_names(family_list,indi_list);
-			euloanty.aunts_and_uncles(family_list,indi_list);*/
-			euloanty.unique_families_by_spouses(family_list,indi_list);
-			euloanty.aunts_and_uncles(family_list,indi_list);
 
-      Check.uniqueFirstNamesInFamilies(family_list, indi_list);
-      Check.listDeceased(family_list, indi_list);
-
-
-/*			UserStorySprint1.siblingNotMarry(family_list, indi_list);
-			UserStorySprint1.uniqueId(family_list, indi_list);
-     	Check.noMarriageToDescendant(family_list);
-      Check.correctGenderForRole(family_list, indi_list);*/
+//			UserStorySprint1.birthBeforeMarr(indi_list, family_list);
+//			UserStorySprint1.marraigeBeforeDeath(indi_list, family_list);
+//			UserStorySprint1.marrageAfterFourteen(indi_list, family_list);
+//			UserStorySprint1.multipleBirth(family_list);
+//			UserStorySprint1.siblingNotMarry(family_list, indi_list);
+//			UserStorySprint1.uniqueId(family_list, indi_list);
+//			cv.BirthBeforeDeath(indi_list);
+//			cv.DivorceBeforeDeath(family_list, indi_list);
+//			cv.NoBigamy(family_list);
+//			cv.FewerThanFifteenSiblings(family_list);
+//			cv.FirstCousinsNotMarry(family_list, indi_list);
+//			cv.UniqueNameAndBirth(indi_list);
+//			Check.beforeCurrent(indi_list, family_list);
+//			Check.dateBeforeMarriage(family_list);
+//			Check.birthBeforeDeathOfParents(family_list, indi_list);
+//			Check.siblingsSpace(family_list, indi_list);
+//			Check.noMarriageToDescendant(family_list);
+//			Check.correctGenderForRole(family_list, indi_list);
+//			euloanty.less_than_150_years_old(indi_list);
+//			euloanty.birth_before_marriage_of_parents(family_list,indi_list);
+//			euloanty.parents_not_too_old(family_list,indi_list);
+//			euloanty.male_last_names(family_list,indi_list);
+//			euloanty.unique_families_by_spouses(family_list,indi_list);
+//			euloanty.aunts_and_uncles(family_list, indi_list);
+			cv.ListLivingSingle(indi_list);
 
 		}
 		catch (Exception e)

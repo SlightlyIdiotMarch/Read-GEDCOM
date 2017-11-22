@@ -165,23 +165,16 @@ public class CheckValidate {
 	}
 	
 	// US27: Include individual ages
-	public void IncludeIndividualAges(List<Individual> individuals) {
+	public String IncludeIndividualAges(Individual indi) {
+		String age = "";
 		try {
-			for (Individual indi : individuals) {
-				String age = "";
-				if (indi.death == null) {
-					if (UtilityZS.processDate(indi.birthday).before((new Date()))) {
-						age = String.valueOf(UtilityZS.getAge(UtilityZS.processDate(indi.birthday)));
-					}
-				}
-				if(age.equals("")) {
-					System.out.println("ERROR: INDIVIDUAL: U27: " + indi.id + " has no age when listing individuals");
-				}
-				
+			if (UtilityZS.processDate(indi.birthday).before((new Date()))) {
+				age = String.valueOf(UtilityZS.getAge(UtilityZS.processDate(indi.birthday)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return age;
 	}
 	
 	//US31: List living single
