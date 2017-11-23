@@ -233,46 +233,80 @@ public class euloanty
 	//No more than one family with the same name and birth date should appear in a family
 	public static void unique_families_by_spouses(List<Family> families, List<Individual> individuals) throws java.text.ParseException
 	{
+		for (int i=0;i!=families.size();++i)
+		{
+			Family f1=families.get(i);
+			Individual h=get_individual(individuals, f1.husband_id);
+			Individual w=get_individual(individuals, f1.wife_id);
+			for(int j=i+1;j<families.size();++j)
+			{
+					Family f2=families.get(j);
+					if(!f1.marriage_date.equals(f2.marriage_date))
+						continue;
+					Individual h1=get_individual(individuals, f2.husband_id);
+					Individual w1=get_individual(individuals, f2.wife_id);
+					if(h.name.equals(h1.name)&&w.name.equals(w1.name))
+					{
+						System.out.println("ERROR: FAMILY: US24: ("+f1.id+") ("+f2.id+") has the same name and marriage date");
+					}
+			}
+		}
+	}
+		
+	//US28 Order siblings by age
+	//List siblings in families by decreasing age, i.e. oldest siblings first
+	public static void order_siblings_by_age(List<Family> families, List<Individual> individuals) throws java.text.ParseException
+	{
 		for (Family family: families)
 		{
-			Individual husband=get_individual(individuals,family.husband_id);
-			Individual wife=get_individual(individuals,family.wife_id);
-			if(husband!=null && wife!=null && husband.name.equals(wife.name) && husband.birthday.equals(wife.birthday))
-				System.out.println("ERROR: FAMILY: US24: " + family.id + " More than one family the same name and birth date appears in a family");
 			if(family.child_ids==null)
 				continue;
-			for (String child1 : family.child_ids)
+			if(family.child_ids.size()<2)
+				continue;
+			java.util.ArrayList<Individual> ar=new java.util.ArrayList<Individual>();
+			for (String child : family.child_ids)
+				ar.add(get_individual(individuals, child));
+			java.util.Collections.sort(ar,new java.util.Comparator<Individual>()
 			{
-				Individual c=get_individual(individuals,child1);
-				if(c==null)
-					continue;
-				if(husband!=null && husband.name.equals(c.name) && husband.birthday.equals(c.birthday))
+				@Override
+				public int compare(Individual a,Individual b)
 				{
-					System.out.println("ERROR: FAMILY: US24: " + family.id + " More than one family the same name and birth date appears in a family");
-					break;
-				}
-				if(wife!=null && wife.name.equals(c.name) && wife.birthday.equals(c.birthday))
-				{
-					System.out.println("ERROR: FAMILY: US24: " + family.id + " More than one family the same name and birth date appears in a family");
-					break;
-				}
-				boolean hh=false;
-				for (String child2 : family.child_ids)
-				{
-					if(child1!=child2)
+					try
 					{
-						Individual c1=get_individual(individuals,child2);
-						if(c1!=null && c.name.equals(c1.name)&&c.birthday.equals(c1.birthday))
-						{
-							System.out.println("ERROR: FAMILY: US24: " + family.id + " More than one family the same name and birth date appears in a family");
-							hh=true;
-							break;
-						}
+						java.util.GregorianCalendar afb = UtilityZS.ConvertDateStringToGregorianCalendar(a.birthday);
+						java.util.GregorianCalendar bfb = UtilityZS.ConvertDateStringToGregorianCalendar(b.birthday);
+						return afb.compareTo(bfb);
+					}
+					catch(java.text.ParseException e)
+					{
+						return -2;
 					}
 				}
-				if(hh)
-					break;
-			}
+			});
+			System.out.println("US28: FAMILY "+family.id+": Order siblings by age:");
+			for(Individual idv:ar)
+				System.out.print(idv.id+"\tname:"+idv.name+"\t"+idv.birthday+"\n");
+			System.out.println();
+		}
+	}
+		
+	//US32 List multiple births
+	//List all multiple births in a GEDCOM file
+	public static void list_multiple_births(List<Family> families, List<Individual> individuals) throws java.text.ParseException
+	{
+		for (Family family: families)
+		{
+			if(family.child_ids==null)
+				continue;
+			if(family.child_ids.size()<2)
+				continue;
+			java.util.ArrayList<Individual> ar=new java.util.ArrayList<Individual>();
+			for (String child : family.child_ids)
+				ar.add(get_individual(individuals, child));
+			System.out.println("US32: FAMILY "+family.id+": have multiple births ("+ar.size()+")");
+			for(Individual idv:ar)
+				System.out.print(idv.id+"\tname:"+idv.name+"\t"+idv.birthday+"\n");
+			System.out.println();
 		}
 	}
 }
