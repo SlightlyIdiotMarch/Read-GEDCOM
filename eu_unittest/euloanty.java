@@ -265,7 +265,11 @@ public class euloanty
 				continue;
 			java.util.ArrayList<Individual> ar=new java.util.ArrayList<Individual>();
 			for (String child : family.child_ids)
-				ar.add(get_individual(individuals, child));
+			{
+				Individual iv=get_individual(individuals, child);
+				if(iv!=null)
+					ar.add(iv);
+			}
 			java.util.Collections.sort(ar,new java.util.Comparator<Individual>()
 			{
 				@Override
@@ -300,12 +304,13 @@ public class euloanty
 				continue;
 			if(family.child_ids.size()<2)
 				continue;
-			java.util.ArrayList<Individual> ar=new java.util.ArrayList<Individual>();
+			System.out.println("US32: FAMILY "+family.id+": have multiple births ("+family.child_ids.size()+")");
 			for (String child : family.child_ids)
-				ar.add(get_individual(individuals, child));
-			System.out.println("US32: FAMILY "+family.id+": have multiple births ("+ar.size()+")");
-			for(Individual idv:ar)
-				System.out.print(idv.id+"\tname:"+idv.name+"\t"+idv.birthday+"\n");
+			{
+				Individual iv=get_individual(individuals, child);
+				if(iv!=null)
+					System.out.print(iv.id+"\tname:"+iv.name+"\n");
+			}
 			System.out.println();
 		}
 	}

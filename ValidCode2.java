@@ -110,7 +110,9 @@ public class ValidCode2 {
 //			euloanty.male_last_names(family_list,indi_list);
 //			euloanty.unique_families_by_spouses(family_list,indi_list);
 //			euloanty.aunts_and_uncles(family_list, indi_list);
-			cv.ListLivingSingle(indi_list);
+			euloanty.order_siblings_by_age(family_list,indi_list);
+			euloanty.list_multiple_births(family_list, indi_list);
+//			cv.ListLivingSingle(indi_list);
 
 		}
 		catch (Exception e)
