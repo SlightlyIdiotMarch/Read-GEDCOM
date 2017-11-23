@@ -304,14 +304,21 @@ public class euloanty
 				continue;
 			if(family.child_ids.size()<2)
 				continue;
-			System.out.println("US32: FAMILY "+family.id+": have multiple births ("+family.child_ids.size()+")");
-			for (String child : family.child_ids)
+			java.util.ArrayList<String> child_ids = family.child_ids;
+			for (int i=0;i!=child_ids.size();++i)
 			{
-				Individual iv=get_individual(individuals, child);
-				if(iv!=null)
-					System.out.print(iv.id+"\tname:"+iv.name+"\n");
+				Individual c1=get_individual(individuals, child_ids.get(i));
+				if(c1==null)
+					continue;
+				for (int j=i+1;j<child_ids.size();++j)
+				{
+					Individual c2=get_individual(individuals, child_ids.get(j));
+					if(c2==null)
+						continue;
+					if(c1.birthday.equals(c2.birthday))						
+						System.out.println("US32: FAMILY "+family.id+": have multiple births ("+c1.id+":"+c1.birthday+") & ("+c2.id+":"+c2.birthday+")");
+				}
 			}
-			System.out.println();
 		}
 	}
 }
